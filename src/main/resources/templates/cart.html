@@ -1,0 +1,70 @@
+<!-- src/main/resources/templates/cart.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Корзина | PC CLUB</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+<header class="header">
+    <div class="container header-container">
+        <h1 class="logo">PC <span>CLUB</span></h1>
+        <nav>
+            <a th:href="@{/}" class="btn btn-secondary" style="margin-right:8px;">Главная</a>
+            <span th:if="${session.username}">
+                <a th:href="@{/cart}" class="btn btn-secondary" style="margin-right:8px;">Корзина</a>
+                <a th:href="@{/profile}" class="btn btn-secondary" style="margin-right:8px;" th:text="${session.username}"></a>
+                <a th:href="@{/logout}" class="btn btn-danger" style="margin-left:8px;">Выйти</a>
+            </span>
+            <span th:unless="${session.username}">
+                <a th:href="@{/login}" class="btn btn-primary">Войти</a>
+            </span>
+        </nav>
+    </div>
+</header>
+<div class="container" style="margin-top:40px;">
+    <div class="card" style="max-width:900px;margin:0 auto;">
+        <h2 class="section-title">Ваша корзина</h2>
+        <div th:if="${cartEmpty}" style="color:#888;font-size:1.11em;">Корзина пуста</div>
+        <div th:unless="${cartEmpty}">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Ресурс</th>
+                    <th>Время</th>
+                    <th>Цена</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${cartItems}">
+                    <td th:text="${item.resourceName}"></td>
+                    <td>
+                        <span th:text="${item.start_time}"></span> —
+                        <span th:text="${item.end_time}"></span>
+                    </td>
+                    <td th:text="${item.resourcePrice} + ' ₽'"></td>
+                    <td>
+                        <form th:action="@{/cart/remove/{id}(id=${item.id})}" method="post">
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="total">Итого: <span th:text="${totalPrice}"></span> руб.</p>
+            <form th:action="@{/cart/checkout}" method="post" style="margin-top:18px;display:inline-block;">
+                <button type="submit" class="btn btn-primary">Оформить заказ (картой)</button>
+            </form>
+            <form th:action="@{/cart/checkout-balance}" method="post" style="margin-top:18px;display:inline-block;margin-left:12px;">
+                <button type="submit" class="btn btn-success">Оплатить балансом</button>
+            </form>
+        </div>
+        <div style="margin-top:16px;">
+            <a href="/" class="btn btn-secondary">Продолжить выбор</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить событие</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+<div class="container" style="margin-top:40px;">
+    <div class="card" style="max-width:600px;margin:0 auto;">
+        <h2 class="section-title">Новое событие</h2>
+        <form th:action="@{/admin/events/create}" th:object="${event}" method="post" style="margin-top:18px;">
+            <div style="margin-bottom:16px;">
+                <label for="title" style="font-weight:600;">Заголовок</label>
+                <input id="title" type="text" th:field="*{title}" class="form-control" placeholder="Название события" required />
+            </div>
+            <div style="margin-bottom:16px;">
+                <label for="description" style="font-weight:600;">Краткое описание</label>
+                <textarea id="description" th:field="*{description}" class="form-control" placeholder="Краткое описание" rows="2"></textarea>
+            </div>
+            <div style="margin-bottom:16px;">
+                <label for="fulldescription" style="font-weight:600;">Полное описание</label>
+                <textarea id="fulldescription" th:field="*{fulldescription}" class="form-control" placeholder="Детали события" rows="3"></textarea>
+            </div>
+            <div style="margin-bottom:16px;display:flex;gap:16px;">
+                <div style="flex:1;">
+                    <label for="startDate" style="font-weight:600;">Начало</label>
+                    <input id="startDate" type="date" th:field="*{startDate}" class="form-control" required />
+                </div>
+                <div style="flex:1;">
+                    <label for="endDate" style="font-weight:600;">Окончание</label>
+                    <input id="endDate" type="date" th:field="*{endDate}" class="form-control" required />
+                </div>
+            </div>
+            <div style="display:flex;gap:12px;">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <a th:href="@{/admin/dashboard}" class="btn btn-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

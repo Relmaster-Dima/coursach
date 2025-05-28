@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Расписание ресурса</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+<div class="container" style="max-width:700px;margin:40px auto;">
+    <h2 class="section-title">Расписание
+        <span th:text="${type}"></span> #<span th:text="${resourceId}"></span>
+    </h2>
+    <table class="table table-striped" style="margin-top:18px;">
+        <thead>
+        <tr>
+            <th>Начало</th>
+            <th>Окончание</th>
+            <th>Статус</th>
+            <th>Пользователь</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="r : ${reservations}">
+            <td th:text="${#temporals.format(r.startTime,'dd.MM.yyyy HH:mm')}"></td>
+            <td th:text="${#temporals.format(r.endTime,'dd.MM.yyyy HH:mm')}"></td>
+            <td th:text="${r.status}"></td>
+            <td th:text="${r.user.fullName}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div style="margin-top:24px;text-align:right;">
+        <a th:href="@{/}" class="btn btn-secondary">На главную</a>
+    </div>
+</div>
+</body>
+</html> 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать бронирование</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+<div class="container" style="margin-top:40px;">
+    <div class="card" style="max-width:600px;margin:0 auto;">
+        <h2 class="section-title">Редактировать бронирование</h2>
+        <form th:action="@{|/admin/reservations/edit/${reservation.id}|}" th:object="${reservation}" method="post" style="margin-top:18px;">
+            <div style="margin-bottom:16px;">
+                <label for="userId" style="font-weight:600;">ID пользователя</label>
+                <input id="userId" type="number" th:field="*{user.id}" class="form-control" placeholder="ID пользователя" required />
+            </div>
+            <div style="margin-bottom:16px;">
+                <label for="resourceType" style="font-weight:600;">Тип ресурса</label>
+                <input id="resourceType" type="text" th:field="*{resourceType}" class="form-control" placeholder="COMPUTER или CONSOLE" required />
+            </div>
+            <div style="margin-bottom:16px;">
+                <label for="resourceId" style="font-weight:600;">ID ресурса</label>
+                <input id="resourceId" type="number" th:field="*{resourceId}" class="form-control" placeholder="ID ресурса" required />
+            </div>
+            <div style="margin-bottom:16px;display:flex;gap:16px;">
+                <div style="flex:1;">
+                    <label for="startTime" style="font-weight:600;">Начало</label>
+                    <input id="startTime" type="datetime-local" th:field="*{startTime}" class="form-control" required />
+                </div>
+                <div style="flex:1;">
+                    <label for="endTime" style="font-weight:600;">Окончание</label>
+                    <input id="endTime" type="datetime-local" th:field="*{endTime}" class="form-control" required />
+                </div>
+            </div>
+            <div style="margin-bottom:24px;">
+                <label for="status" style="font-weight:600;">Статус</label>
+                <select id="status" th:field="*{status}" class="form-control" required>
+                    <option value="PENDING">PENDING</option>
+                    <option value="CONFIRMED">CONFIRMED</option>
+                    <option value="CANCELLED">CANCELLED</option>
+                </select>
+            </div>
+            <div style="display:flex;gap:12px;">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <a th:href="@{/admin/dashboard}" class="btn btn-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

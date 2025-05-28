@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Добавить отзыв</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+<div class="container" style="max-width:600px;margin:40px auto;">
+    <h2 class="section-title">Добавить отзыв</h2>
+    <form th:action="@{/admin/reviews/create}" method="post" th:object="${review}">
+        <label>Пользователь:
+            <select th:field="*{user.id}" required>
+                <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.fullName}"></option>
+            </select>
+        </label>
+        <br/>
+        <label>Тип ресурса:
+            <select th:field="*{resourceType}" required>
+                <option value="COMPUTER">Компьютер</option>
+                <option value="CONSOLE">Консоль</option>
+            </select>
+        </label>
+        <br/>
+        <label>ID ресурса:
+            <input type="number" th:field="*{resourceId}" required min="1" />
+        </label>
+        <br/>
+        <label>Оценка:
+            <select th:field="*{rating}" required>
+                <option value="5">5</option>
+                <option value="4">4</option>
+                <option value="3">3</option>
+                <option value="2">2</option>
+                <option value="1">1</option>
+            </select>
+        </label>
+        <br/>
+        <label>Текст:
+            <textarea th:field="*{text}" class="form-control" rows="3" required></textarea>
+        </label>
+        <br/>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a th:href="@{/admin/dashboard#reviews}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+</body>
+</html> 

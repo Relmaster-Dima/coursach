@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Панель менеджера</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<div class="container">
+    <h2>Добро пожаловать, <span th:text="${username}"/>!</h2>
+    <p>Это панель менеджера.</p>
+    <nav style="margin-bottom: 24px;">
+        <a th:href="@{/manager/dashboard}" class="btn" style="margin-right:8px;">Главная</a>
+        <a th:href="@{/manager/reservations}" class="btn btn-primary" style="margin-right:8px;">Бронирования</a>
+        <a th:href="@{/manager/payments}" class="btn btn-primary" style="margin-right:8px;">Платежи</a>
+        <a th:href="@{/manager/available-resources}" class="btn btn-primary">Свободные ресурсы</a>
+    </nav>
+    <div th:if="${pendingReservations != null && !pendingReservations.isEmpty()}">
+        <h3>Ожидающие оплаты бронирования</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Пользователь</th>
+                <th>Тип ресурса</th>
+                <th>ID ресурса</th>
+                <th>Начало</th>
+                <th>Конец</th>
+                <th>Действие</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${pendingReservations}">
+                <td th:text="${r.id}"></td>
+                <td th:text="${r.user.username}"></td>
+                <td th:text="${r.resourceType}"></td>
+                <td th:text="${r.resourceId}"></td>
+                <td th:text="${#temporals.format(r.startTime,'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${#temporals.format(r.endTime,'yyyy-MM-dd HH:mm')}"></td>
+                <td>
+                    <form th:action="@{|/manager/confirm-payment/${r.id}|}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-success">Принять оплату</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${pendingReservations == null || pendingReservations.isEmpty()}">
+        <p>Нет ожидающих оплат бронирований.</p>
+    </div>
+    <a th:href="@{/logout}" class="btn btn-secondary">Выйти</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Платежи — Менеджер</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<div class="container">
+    <nav style="margin-bottom: 24px;">
+        <a th:href="@{/manager/dashboard}" class="btn" style="margin-right:8px;">Главная</a>
+        <a th:href="@{/manager/reservations}" class="btn btn-primary" style="margin-right:8px;">Бронирования</a>
+        <a th:href="@{/manager/payments}" class="btn btn-primary" style="margin-right:8px;">Платежи</a>
+        <a th:href="@{/manager/available-resources}" class="btn btn-primary">Свободные ресурсы</a>
+    </nav>
+    <h2 style="margin-bottom:18px;">История оплат</h2>
+    <a th:href="@{/manager/payments}" class="btn btn-secondary" style="margin-bottom:16px;">Назад</a>
+    <form method="get" th:action="@{/manager/payments}" style="margin-bottom:18px;">
+        <label>С:
+            <input type="date" name="from" th:value="${from}" />
+        </label>
+        <label>По:
+            <input type="date" name="to" th:value="${to}" />
+        </label>
+        <label>Метод:
+            <select name="method">
+                <option value="">Все</option>
+                <option value="CASH" th:selected="${method == 'CASH'}">Наличные</option>
+                <option value="CARD" th:selected="${method == 'CARD'}">Карта</option>
+            </select>
+        </label>
+        <button type="submit" class="btn btn-primary">Фильтровать</button>
+    </form>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Дата</th>
+            <th>Пользователь</th>
+            <th>Сумма</th>
+            <th>Метод</th>
+            <th>Ресурс</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${payments}">
+            <td th:text="${p.id}"></td>
+            <td th:text="${#temporals.format(p.paidAt, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${p.reservation.user.username}"></td>
+            <td th:text="${p.amount}"></td>
+            <td th:text="${p.method}"></td>
+            <td th:text="${p.reservation.resourceType} + ' ' + ${p.reservation.resourceId}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html> 

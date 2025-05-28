@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Редактировать участника события</title></head>
+<body>
+<h1>Редактировать участника события</h1>
+<form th:action="@{|/admin/event-participants/edit/${participant.id.eventId}/${participant.id.userId}|}" th:object="${participant}" method="post">
+    <label>Статус:
+        <select th:field="*{result}">
+            <option value="PENDING">PENDING</option>
+            <option value="CONFIRMED">CONFIRMED</option>
+            <option value="CANCELLED">CANCELLED</option>
+        </select>
+    </label>
+    <button type="submit">Сохранить</button>
+</form>
+<a th:href="@{/admin/dashboard}">Назад</a>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавить компьютер</title>
+</head>
+<body>
+<h1>Новый компьютер</h1>
+<form th:action="@{/admin/computers/create}" th:object="${computer}" method="post">
+  <label>Название: <input type="text" th:field="*{name}"/></label><br/>
+  <label>CPU: <input type="text" th:field="*{cpuModel}"/></label><br/>
+  <label>GPU: <input type="text" th:field="*{gpuModel}"/></label><br/>
+  <label>ОЗУ (GB): <input type="number" th:field="*{ramGb}"/></label><br/>
+  <label>В наличии: <input type="checkbox" th:field="*{isAvailable}"/></label><br/>
+  <label>Цена: <input type="number" step="0.01" th:field="*{price}"/></label><br/>
+  <button type="submit">Сохранить</button>
+  <a th:href="@{/admin/dashboard}">Отмена</a>
+</form>
+</body>
+</html>

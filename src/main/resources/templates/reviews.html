@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Отзывы</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+    <div class="container" style="max-width:600px;margin:40px auto;">
+        <h2 class="section-title">Отзывы</h2>
+        <div th:if="${avgRating > 0}" style="margin-bottom:18px;">
+            Средний рейтинг: <span th:text="${#numbers.formatDecimal(avgRating, 1, 1)}"></span> / 5
+        </div>
+        <div th:if="${reviews.isEmpty()}">Пока нет отзывов.</div>
+        <div th:each="r,iter : ${reviews}" class="card" style="margin-bottom:14px;">
+            <div>
+                <b th:text="${r.user.fullName}"></b> — <span th:text="${r.rating}"></span>/5
+            </div>
+            <div th:text="${r.text}" style="margin-top:4px;"></div>
+            <div style="font-size:0.95em;color:#888;margin-bottom:4px;">
+                <span th:text="${r.resourceType}"></span>
+                <span th:text="' #' + ${r.resourceId}" style="margin-left:4px;"></span>
+                <span th:text="${reviewNames[iter.index]}" style="margin-left:8px;font-weight:600;"></span>
+            </div>
+            <div style="font-size:0.9em;color:#888;" th:text="${#temporals.format(r.createdAt, 'dd.MM.yyyy HH:mm')}"></div>
+        </div>
+        <div th:if="${resourceType != null and resourceId != null}">
+            <hr style="margin:30px 0;"/>
+            <h3>Оставить отзыв</h3>
+            <form th:action="@{/reviews/add}" method="post">
+                <input type="hidden" name="resourceType" th:value="${resourceType}" />
+                <input type="hidden" name="resourceId" th:value="${resourceId}" />
+                <label>Оценка:
+                    <select name="rating" required>
+                        <option value="">—</option>
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                    </select>
+                </label>
+                <br/>
+                <label>Отзыв:
+                    <textarea name="text" class="form-control" rows="2" required></textarea>
+                </label>
+                <br/>
+                <button type="submit" class="btn btn-primary">Отправить</button>
+            </form>
+        </div>
+        <div style="margin-top:24px;text-align:right;">
+            <a th:href="@{/}" class="btn btn-secondary">На главную</a>
+        </div>
+    </div>
+</body>
+</html> 

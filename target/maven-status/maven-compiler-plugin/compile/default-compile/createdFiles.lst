@@ -1,0 +1,13 @@
+com\pcclub\controller\AdminController.class
+com\pcclub\model\Console.class
+com\pcclub\service\ComputerService.class
+com\pcclub\repository\ConsoleRepository.class
+com\pcclub\controller\ManagerController.class
+com\pcclub\model\Computer.class
+com\pcclub\controller\AuthController.class
+com\pcclub\repository\ComputerRepository.class
+com\pcclub\ClubApplication.class
+com\pcclub\model\ConsoleType.class
+com\pcclub\service\ConsoleService.class
+com\pcclub\controller\HomeController.class
+com\pcclub\controller\ResourceServlet.class

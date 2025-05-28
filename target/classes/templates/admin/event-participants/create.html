@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить участника события</title>
+</head>
+<body>
+<h1>Новый участник</h1>
+<form th:action="@{/admin/participants/create}" th:object="${participant}" method="post">
+    <label>Событие:
+        <select th:field="*{event}" th:object="${participant}">
+            <option th:each="ev : ${events}" th:value="${ev.id}" th:text="${ev.title}"></option>
+        </select>
+    </label><br/>
+    <label>Пользователь:
+        <select th:field="*{user}" th:object="${participant}">
+            <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.fullName}"></option>
+        </select>
+    </label><br/>
+    <label>Дата регистрации: <input type="datetime-local" th:field="*{registeredAt}"/></label><br/>
+    <label>Результат: <input type="text" th:field="*{result}"/></label><br/>
+    <button type="submit">Сохранить</button>
+    <a th:href="@{/admin/dashboard}">Отмена</a>
+</form>
+</body>
+</html>

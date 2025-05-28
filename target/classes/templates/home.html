@@ -1,0 +1,217 @@
+<!-- src/main/resources/templates/home.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>PC CLUB</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <h1 class="logo">PC <span>CLUB</span></h1>
+            <nav>
+                <a th:href="@{/}" class="btn btn-secondary" style="margin-right:8px;">Главная</a>
+                <span th:if="${session.username}">
+                    <a th:href="@{/cart}" class="btn btn-secondary" style="margin-right:8px;">Корзина</a>
+                    <a th:href="@{/profile}" class="btn btn-secondary" style="margin-right:8px;" th:text="${session.username}"></a>
+                    <a th:if="${session.role == 'ADMIN'}" th:href="@{/admin/dashboard}" class="btn btn-primary" style="margin-left:8px;">Админ-панель</a>
+                    <a th:if="${session.role == 'MANAGER'}" th:href="@{/manager/dashboard}" class="btn btn-primary" style="margin-left:8px;">Менеджер-панель</a>
+                    <a th:href="@{/logout}" class="btn btn-danger" style="margin-left:8px;">Выйти</a>
+                </span>
+                <span th:unless="${session.username}">
+                    <a th:href="@{/login}" class="btn btn-primary">Войти</a>
+                </span>
+            </nav>
+        </div>
+    </header>
+
+    <section class="container" style="margin-top:38px;">
+        <h2 class="section-title">События</h2>
+        <div th:if="${message}" class="alert" th:text="${message}"></div>
+        <div class="grid">
+            <div class="card" th:each="event : ${events}">
+                <div class="event-label" th:if="${event.startDate != event.endDate}" th:text="'Даты: ' + ${event.startDate} + ' — ' + ${event.endDate}"></div>
+                <div class="event-label" th:if="${event.startDate == event.endDate}" th:text="'Дата: ' + ${event.startDate}"></div>
+                <h3 class="card-title" th:text="${event.title}">Заголовок</h3>
+                <p th:text="${event.description}">Описание события</p>
+                <div style="display:flex;align-items:center;margin-top:18px;">
+                    <div th:if="${session.username}">
+                        <form th:action="@{/events/register/{id}(id=${event.id})}" method="post" class="event-register-form" style="display:inline;">
+                            <button type="submit" class="btn btn-primary">Записаться</button>
+                        </form>
+                        <a th:href="@{/events/{id}(id=${event.id})}" class="btn btn-secondary">Подробнее</a>
+                    </div>
+                    <div th:unless="${session.username}">
+                        <a th:href="@{/events/{id}(id=${event.id})}" class="btn btn-secondary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" style="margin-top:50px;">
+        <form method="get" action="/" class="card" style="max-width:600px;margin:0 auto 32px auto;">
+            <div style="display:flex;gap:16px;align-items:center;">
+                <label>Начало:
+                    <input type="datetime-local" id="startTime" name="startTime" th:value="${startTime != null ? #temporals.format(startTime,'yyyy-MM-dd''T''HH:mm') : ''}" />
+                </label>
+                <label>Конец:
+                    <input type="datetime-local" id="endTime" name="endTime" th:value="${endTime   != null ? #temporals.format(endTime,  'yyyy-MM-dd''T''HH:mm') : ''}" />
+                </label>
+                <button type="submit" class="btn btn-primary">Показать свободные</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="container" style="margin-top:50px;">
+        <h2 class="section-title">Доступные компьютеры</h2>
+        <div class="grid">
+            <div class="card" th:each="computer : ${computers}">
+                <div class="card-header" style="display:flex;align-items:center;gap:16px;">
+                    <img th:src="@{/img/pc.jpg}" alt="ПК" style="width:80px;height:auto;border-radius:8px;">
+                    <div>
+                        <h3 class="card-title" th:text="${computer.name}">Имя ПК</h3>
+                        <span class="price" th:text="${computer.price} + ' ₽/ч'"></span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>CPU: <span th:text="${computer.cpuModel}"></span></p>
+                    <p>RAM: <span th:text="${computer.ramGb}"></span> ГБ</p>
+                </div>
+                <div class="card-footer">
+                    <div th:if="${session.username}">
+                        <button class="btn btn-primary book-btn" th:data-type="'COMPUTER'" th:data-id="${computer.id}">Забронировать</button>
+                    </div>
+                    <div th:unless="${session.username}">
+                        <a th:href="@{/login}" class="btn btn-primary">Забронировать</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2 class="section-title" style="margin-top:38px;">Доступные консоли</h2>
+        <div class="grid">
+            <div class="card" th:each="console : ${consoles}">
+                <div class="card-header" style="display:flex;align-items:center;gap:16px;">
+                    <img th:src="@{/img/console.jpg}" alt="Консоль" style="width:80px;height:auto;border-radius:8px;">
+                    <div>
+                        <h3 class="card-title" th:text="${console.name}">Имя консоли</h3>
+                        <span class="price" th:text="${console.price} + ' ₽/ч'"></span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>Тип: <span th:text="${console.type}"></span></p>
+                </div>
+                <div class="card-footer">
+                    <div th:if="${session.username}">
+                        <button class="btn btn-primary book-btn" th:data-type="'CONSOLE'" th:data-id="${console.id}">Забронировать</button>
+                    </div>
+                    <div th:unless="${session.username}">
+                        <a th:href="@{/login}" class="btn btn-primary">Забронировать</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2 class="section-title" style="margin-top:38px;">Отзывы клиентов</h2>
+        <div class="grid">
+            <div class="card" th:each="r,iter : ${latestReviews}">
+                <div class="card-header">
+                    <b th:text="${r.user.fullName}">Имя</b>
+                    <span th:text="${r.rating} + '/5'"></span>
+                </div>
+                <div class="card-body" th:text="${r.text}">Текст отзыва</div>
+                <div style="font-size:0.95em;color:#888;margin-bottom:4px;">
+                    <span th:text="${r.resourceType}"></span>
+                    <span th:text="' #' + ${r.resourceId}" style="margin-left:4px;"></span>
+                    <span th:text="${latestReviewNames[iter.index]}" style="margin-left:8px;font-weight:600;"></span>
+                </div>
+                <div class="card-footer" th:text="${#temporals.format(r.createdAt, 'dd.MM.yyyy HH:mm')}"></div>
+            </div>
+        </div>
+        <div style="text-align:right;margin-top:12px;display:flex;gap:12px;justify-content:flex-end;">
+            <a th:href="@{/reviews}" class="btn btn-secondary">Все отзывы</a>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Устанавливаем минимальное значение для выбора дат (текущее время)
+            function setMinDateTime() {
+                const now = new Date();
+                const pad = n => n.toString().padStart(2, '0');
+                const local = now.getFullYear() + '-' + pad(now.getMonth()+1) + '-' + pad(now.getDate()) + 'T' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+                document.getElementById('startTime').setAttribute('min', local);
+                document.getElementById('endTime').setAttribute('min', local);
+            }
+            setMinDateTime();
+            // Обновлять min при каждом фокусе (на случай долгого пребывания на странице)
+            document.getElementById('startTime').addEventListener('focus', setMinDateTime);
+            document.getElementById('endTime').addEventListener('focus', setMinDateTime);
+            // Обновлять min для конца при изменении начала
+            document.getElementById('startTime').addEventListener('change', function() {
+                const startVal = this.value;
+                if (startVal) {
+                    document.getElementById('endTime').setAttribute('min', startVal);
+                } else {
+                    setMinDateTime();
+                }
+            });
+            // confirm для событий (ивентов)
+            document.querySelectorAll("form.event-register-form").forEach(form => {
+                form.addEventListener("submit", function(e) {
+                    e.preventDefault();
+                    if (confirm("Вы уверены, что хотите записаться на это событие?")) {
+                        form.submit();
+                    }
+                });
+            });
+            // скрипт для быстрой брони компьютеров и консолей
+            const start = document.getElementById('startTime');
+            const end   = document.getElementById('endTime');
+            document.querySelectorAll('.book-btn').forEach(btn => {
+                btn.addEventListener('click', async e => {
+                    e.preventDefault();
+                    if (!start.value || !end.value) {
+                        alert('Пожалуйста, укажите и начало, и конец брони.');
+                        return;
+                    }
+                    const now = new Date();
+                    const startDate = new Date(start.value);
+                    const endDate = new Date(end.value);
+                    if (startDate < now || endDate < now) {
+                        alert('Нельзя бронировать в прошлое.');
+                        return;
+                    }
+                    if (endDate <= startDate) {
+                        alert('Время окончания должно быть позже времени начала.');
+                        return;
+                    }
+                    const payload = {
+                        resourceType: btn.getAttribute('data-type'),
+                        resourceId:   btn.getAttribute('data-id'),
+                        startTime:    start.value,
+                        endTime:      end.value
+                    };
+                    try {
+                        const res = await fetch('/api/reservations/create', {
+                            method: 'POST',
+                            headers: {'Content-Type':'application/json'},
+                            body: JSON.stringify(payload)
+                        });
+                        const data = await res.json();
+                        if (res.ok) {
+                            alert('Бронь создана со статусом ' + data.status);
+                        } else {
+                            alert('Ошибка: ' + (data.error || JSON.stringify(data)));
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        alert('Не удалось создать бронь.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

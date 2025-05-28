@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить бронирование</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+<div class="container" style="margin-top:40px;">
+    <div class="card" style="max-width:600px;margin:0 auto;">
+        <h2 class="section-title">Новое бронирование</h2>
+        <form th:action="@{/admin/reservations/create}" th:object="${reservation}" method="post" style="margin-top:18px;">
+            <div style="margin-bottom:16px;">
+                <label for="user" style="font-weight:600;">Пользователь</label>
+                <select id="user" th:field="*{user}" class="form-control" required>
+                    <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.fullName}"></option>
+                </select>
+            </div>
+            <div style="margin-bottom:16px;">
+                <label for="resourceType" style="font-weight:600;">Тип ресурса</label>
+                <select id="resourceType" th:field="*{resourceType}" class="form-control" required>
+                    <option value="COMPUTER">Компьютер</option>
+                    <option value="CONSOLE">Консоль</option>
+                </select>
+            </div>
+            <div style="margin-bottom:16px;">
+                <label for="resourceId" style="font-weight:600;">Ресурс</label>
+                <select id="resourceId" th:field="*{resourceId}" class="form-control" required>
+                    <option th:each="c : ${computers}" th:if="${reservation.resourceType != null and reservation.resourceType.name() == 'COMPUTER'}" th:value="${c.id}" th:text="${c.name}"></option>
+                    <option th:each="c : ${consoles}" th:if="${reservation.resourceType != null and reservation.resourceType.name() == 'CONSOLE'}" th:value="${c.id}" th:text="${c.name}"></option>
+                </select>
+            </div>
+            <div style="margin-bottom:16px;display:flex;gap:16px;">
+                <div style="flex:1;">
+                    <label for="startTime" style="font-weight:600;">Начало</label>
+                    <input id="startTime" type="datetime-local" th:field="*{startTime}" class="form-control" required />
+                </div>
+                <div style="flex:1;">
+                    <label for="endTime" style="font-weight:600;">Окончание</label>
+                    <input id="endTime" type="datetime-local" th:field="*{endTime}" class="form-control" required />
+                </div>
+            </div>
+            <div style="margin-bottom:24px;">
+                <label for="status" style="font-weight:600;">Статус</label>
+                <select id="status" th:field="*{status}" class="form-control" required>
+                    <option value="PENDING">PENDING</option>
+                    <option value="CONFIRMED">CONFIRMED</option>
+                    <option value="CANCELLED">CANCELLED</option>
+                </select>
+            </div>
+            <div style="display:flex;gap:12px;">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <a th:href="@{/admin/dashboard}" class="btn btn-secondary">Назад</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

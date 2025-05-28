@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Бронирования — Менеджер</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<div class="container">
+    <nav style="margin-bottom: 24px;">
+        <a th:href="@{/manager/dashboard}" class="btn" style="margin-right:8px;">Главная</a>
+        <a th:href="@{/manager/reservations}" class="btn btn-primary" style="margin-right:8px;">Бронирования</a>
+        <a th:href="@{/manager/payments}" class="btn btn-primary" style="margin-right:8px;">Платежи</a>
+        <a th:href="@{/manager/available-resources}" class="btn btn-primary">Свободные ресурсы</a>
+    </nav>
+    <h2 style="margin-bottom:18px;">Все бронирования</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Пользователь</th>
+            <th>Тип ресурса</th>
+            <th>ID ресурса</th>
+            <th>Начало</th>
+            <th>Конец</th>
+            <th>Статус</th>
+            <th>Действие</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="r : ${allReservations}">
+            <td th:text="${r.id}"></td>
+            <td th:text="${r.user.username}"></td>
+            <td th:text="${r.resourceType}"></td>
+            <td th:text="${r.resourceId}"></td>
+            <td th:text="${#temporals.format(r.startTime,'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${#temporals.format(r.endTime,'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${r.status}"></td>
+            <td>
+                <form th:if="${r.status.name() == 'PENDING' or r.status.name() == 'CONFIRMED'}"
+                      th:action="@{|/manager/cancel-reservation/${r.id}|}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Отменить</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html> 

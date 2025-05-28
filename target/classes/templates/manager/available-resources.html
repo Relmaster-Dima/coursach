@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Свободные ресурсы — Менеджер</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<div class="container">
+    <nav style="margin-bottom: 24px;">
+        <a th:href="@{/manager/dashboard}" class="btn" style="margin-right:8px;">Главная</a>
+        <a th:href="@{/manager/reservations}" class="btn btn-primary" style="margin-right:8px;">Бронирования</a>
+        <a th:href="@{/manager/payments}" class="btn btn-primary" style="margin-right:8px;">Платежи</a>
+        <a th:href="@{/manager/available-resources}" class="btn btn-primary">Свободные ресурсы</a>
+    </nav>
+    <h2 style="margin-bottom:18px;">Свободные компьютеры</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>CPU</th>
+            <th>RAM</th>
+            <th>Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${computers}">
+            <td th:text="${c.id}"></td>
+            <td th:text="${c.name}"></td>
+            <td th:text="${c.cpuModel}"></td>
+            <td th:text="${c.ramGb}"></td>
+            <td th:text="${c.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <h2 style="margin-top:32px;">Свободные консоли</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Тип</th>
+            <th>Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="co : ${consoles}">
+            <td th:text="${co.id}"></td>
+            <td th:text="${co.name}"></td>
+            <td th:text="${co.type}"></td>
+            <td th:text="${co.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html> 

@@ -1,0 +1,45 @@
+<!-- src/main/resources/templates/event-details.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${event.title}">Событие</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <style>
+        body { background:#f3f5f9; font-family:'Segoe UI',sans-serif; }
+        .container { max-width:540px; margin:58px auto; }
+        .card {
+            background:#fff; border-radius:20px; box-shadow:0 4px 16px rgba(80,80,120,0.07);
+            padding:36px 38px 30px 38px;
+        }
+        .btn {
+            display:inline-block; padding:11px 26px;
+            background:linear-gradient(90deg,#2862d8 75%,#35b4ff 100%);
+            color:#fff; border:none; border-radius:12px; font-size:1.07em;
+            font-weight:500; cursor:pointer; margin-top:18px;
+            transition:background 0.18s; text-decoration:none;
+        }
+        .btn:hover { background:linear-gradient(90deg,#1d4da6 65%,#2890ca 100%); }
+        h1 { color:#1d2840; font-size:2.0em; }
+        .dates {
+            color:#2862d8;
+            font-size:1.12em;
+            margin-bottom:14px;
+        }
+        .desc { margin:24px 0; color:#55596c; font-size:1.12em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1 th:text="${event.title}">Заголовок события</h1>
+            <div class="dates">
+                <span th:text="${event.startDate}"></span>
+                <span th:if="${event.endDate != event.startDate}"> — <span th:text="${event.endDate}"></span></span>
+            </div>
+            <div class="desc" th:text="${event.description}">Описание события</div>
+            <a href="/" class="btn" style="background:#fff;color:#2862d8;">На главную</a>
+        </div>
+    </div>
+</body>
+</html>
